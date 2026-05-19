@@ -1,0 +1,172 @@
+<!-- HEADER -->
+<oms-header></oms-header>
+
+<!-- TAB BAR -->
+<oms-home
+  (tabChanged)="onTabChanged($event)">
+</oms-home>
+
+<!-- OMS SECTION -->
+<div
+  *ngIf="showSidebar"
+  class="layout">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+
+    <oms-sidebar
+      (menuChanged)="onMenuChanged($event)">
+    </oms-sidebar>
+
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- MERCHANT ACCOUNT -->
+    <oms-merchant-panel
+
+      *ngIf="
+        selectedSidebarMenu ===
+        'merchantaccount'
+      ">
+
+    </oms-merchant-panel>
+
+    <!-- MERCHANT DATA FORM -->
+    <oms-merchant-data-form
+
+      *ngIf="
+        selectedSidebarMenu ===
+        'editprofile'
+      ">
+
+    </oms-merchant-data-form>
+
+    <!-- CONTACT INFORMATION -->
+    <oms-contact-information
+      *ngIf="
+        selectedSidebarMenu ===
+        'contactinformation'
+      ">
+    </oms-contact-information>
+
+    <oms-contact-information
+      *ngIf="
+        selectedSidebarMenu ===
+        'marketinginformation'
+      "
+
+      sectionTitle="Marketing Information"
+      >
+    </oms-contact-information>
+
+    <oms-contact-information
+      *ngIf="
+        selectedSidebarMenu ===
+        'financeinformation'
+      "
+
+      sectionTitle="Finance Information"
+      >
+    </oms-contact-information>
+
+    <oms-contact-information
+      *ngIf="
+        selectedSidebarMenu ===
+        'operations'
+      "
+
+      sectionTitle="Operations"
+      >
+    </oms-contact-information>
+
+    <!-- REPORT FORMAT -->
+    <oms-report-format
+        *ngIf="
+            selectedSidebarMenu ===
+            'reportformat'
+        ">
+    </oms-report-format>
+
+    <!-- VAT REGISTRATION -->
+    <oms-vat-registration
+
+    *ngIf="
+        !showTaxInvoiceDelivery &&
+        !showUploadCertificate &&
+        !showTaxInvoiceReport &&
+        selectedSidebarMenu === 'vatregistration'
+    "
+
+    (taxInvoiceDeliveryClicked)="
+        onTaxInvoiceDeliveryClicked()
+    "
+
+    (uploadCertificateClicked)="
+        onUploadCertificateClicked()
+    "
+
+    (downloadTaxInvoiceClicked)="
+        onDownloadTaxInvoiceClicked()
+    ">
+
+    </oms-vat-registration>
+
+    <!-- TAX INVOICE DELIVERY -->
+    <oms-tax-invoice-delivery
+
+    *ngIf="
+        showTaxInvoiceDelivery &&
+        selectedSidebarMenu === 'vatregistration'
+    "
+
+    [sectionTitle]="'Tax Invoice Delivery'"
+
+    (backClicked)="
+        onBackToVatRegistration()
+    ">
+
+    </oms-tax-invoice-delivery>
+
+    <!-- UPLOAD CERTIFICATE -->
+    <oms-upload-certificate
+
+    *ngIf="
+        showUploadCertificate &&
+        selectedSidebarMenu === 'vatregistration'
+    "
+    (backClicked)="
+        onBackToVatRegistrationFromUpload()
+    ">
+    </oms-upload-certificate>
+
+    <!-- TAX INVOICE REPORT -->
+    <oms-tax-invoice-report
+
+    *ngIf="
+        showTaxInvoiceReport
+    "
+
+    (backClicked)="
+        onBackFromTaxInvoiceReport()
+    ">
+
+    </oms-tax-invoice-report>
+
+  </div>
+
+</div>
+
+<!-- TERMS & CONDITIONS -->
+<oms-terms-and-conditions
+
+  *ngIf="showTermsConditions">
+
+</oms-terms-and-conditions>
+
+<!-- CHANGE PASSWORD -->
+<oms-change-password
+
+  *ngIf="showChangePassword">   
+</oms-change-password>

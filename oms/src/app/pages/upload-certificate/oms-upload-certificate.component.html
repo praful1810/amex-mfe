@@ -1,0 +1,18 @@
+<div
+  tabindex="0"
+
+  (click)="handleClick($event)"
+
+  (keydown.enter)="handleClick($event)"
+
+  (keydown.space)="handleClick($event)">
+
+  <amex-upload-certificate-panel
+
+    [hintText]="hintText"
+
+    [status]="status">
+
+  </amex-upload-certificate-panel>
+
+</div>

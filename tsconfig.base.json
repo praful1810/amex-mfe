@@ -22,7 +22,12 @@
         "libs/shop/feature-product-detail/src/index.ts"
       ],
       "@org/shop/feature-products": ["libs/shop/feature-products/src/index.ts"],
-      "@org/shop/shared-ui": ["libs/shop/shared-ui/src/index.ts"]
+      "@org/shop/shared-ui": ["libs/shop/shared-ui/src/index.ts"],
+      "bcrb/Routes": ["apps/bcrb/src/app/remote-entry/entry.routes.ts"],
+      "vat_invoice/Routes": [
+        "vat_invoice/src/app/remote-entry/entry.routes.ts"
+      ],
+      "oms/Routes": ["oms/src/app/remote-entry/entry.routes.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

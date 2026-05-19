@@ -1,0 +1,9 @@
+{
+  "name": "vat_invoice-e2e",
+  "$schema": "node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "vat_invoice-e2e/src",
+  "implicitDependencies": ["vat_invoice"],
+  "// targets": "to see all targets run: nx show project vat_invoice-e2e --web",
+  "targets": {}
+}
