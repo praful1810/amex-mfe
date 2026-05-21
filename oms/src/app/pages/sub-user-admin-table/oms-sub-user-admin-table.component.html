@@ -1,0 +1,25 @@
+<div
+
+  tabindex="0"
+
+  role="button"
+
+  (click)="handleClick($event)"
+
+  (keyup.enter)="handleClick($event)"
+
+  (keydown.space)="handleClick($event)">
+
+  <amex-sub-user-admin-table
+
+    [rows]="rows"
+
+    [title]="title"
+
+    [showCreate]="showCreate"
+
+    [createLabel]="createLabel">
+
+  </amex-sub-user-admin-table>
+
+</div>

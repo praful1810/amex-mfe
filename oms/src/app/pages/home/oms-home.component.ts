@@ -30,6 +30,14 @@ export class OmsHomeComponent {
       label: 'Merchant Account'
     },
     {
+      id: 'omsusers',
+      label: 'OMS Users'
+    },
+    {
+      id: 'mrmusers',
+      label: 'MRM Users'
+    },
+    {
       id: 'subuseradministration',
       label: 'Sub User Administration'
     },
@@ -41,21 +49,25 @@ export class OmsHomeComponent {
       id: 'termsandconditions',
       label: 'Terms & Conditions'
     },
-    {
-      id: 'daterange',
-      label: 'Date Range'
-    },
-    {
-      id: 'searchreports',
-      label: 'Search Reports'
-    },
+    // {
+    //   id: 'daterange',
+    //   label: 'Date Range'
+    // },
+    // {
+    //   id: 'searchreports',
+    //   label: 'Search Reports'
+    // },
     {
       id: 'customizedreports',
       label: 'Customized Reports'
+    },
+    {
+      id: 'addnewoutlet',
+      label: 'Add New Outlet'
     }
   ];
 
-  activeTabId = 'mrmusers';
+  activeTabId = '';
 
   onTabClick(tabId: string) {
 
