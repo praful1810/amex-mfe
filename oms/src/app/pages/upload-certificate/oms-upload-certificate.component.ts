@@ -5,7 +5,9 @@ import {
   Output
 } from '@angular/core';
 
-import { CommonModule } from '@angular/common';
+import {
+  CommonModule
+} from '@angular/common';
 
 import {
   AmexUploadCertificatePanelComponent
@@ -14,11 +16,14 @@ import {
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'oms-upload-certificate',
+
   standalone: true,
+
   imports: [
     CommonModule,
     AmexUploadCertificatePanelComponent
   ],
+
   templateUrl:
     './oms-upload-certificate.component.html',
 })
@@ -30,36 +35,91 @@ export class OmsUploadCertificateComponent {
 
   @Input()
   status:
-    'idle' | 'success' | 'error' = 'idle';
+    'idle'
+    | 'success'
+    | 'error' = 'idle';
 
-   @Output()
-   uploadCertificateClicked = new EventEmitter<void>();
+  @Input()
+  statusMessage = '';
 
-   @Output()
-   backClicked = new EventEmitter<void>();
+  @Output()
+  uploadCertificateClicked =
+    new EventEmitter<void>();
 
-   onUploadCertificate() {
+  @Output()
+  backClicked =
+    new EventEmitter<void>();
+
+    showComponent = true;
+
+  // FILE UPLOAD
+  onUploadCertificate(
+  file: File | null
+) {
+
+  console.log(
+    'Selected File:',
+    file
+  );
+
+  // NO FILE
+  if (!file) {
+
+    this.status = 'error';
+
+    this.statusMessage =
+      'Please select a file';
+
+    return;
+  }
+
+  const validTypes = [
+
+    'application/pdf',
+
+    'image/jpeg',
+
+    'image/jpg'
+  ];
+
+  // INVALID FILE
+  if (
+    !validTypes.includes(
+      file.type
+    )
+  ) {
+
+    this.status = 'error';
+
+    this.statusMessage =
+      'Invalid file type. Please upload a PDF.';
+
+    return;
+  }
+
+  // SUCCESS
+  setTimeout(() => {
+
+    this.status =
+      'success';
+
+    this.statusMessage =
+      'Certificate uploaded successfully.';
 
     console.log(
-        'Upload Certificate Clicked'
+      'Upload Success'
     );
 
-    this.uploadCertificateClicked.emit();
-    }
+  }, 1000);
+}
 
-    handleClick(event: any) {
+  // BACK
+  onBack() {
 
-    const text =
-        event.target?.innerText?.trim();
+    console.log(
+      'Back Clicked'
+    );
 
-    console.log('Clicked:', text);
-
-    if (
-        text?.toLowerCase()
-        .includes('back')
-    ) {
-
-        this.backClicked.emit();
-    }
-    }
+    this.backClicked.emit();
+  }
 }

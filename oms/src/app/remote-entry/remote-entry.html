@@ -237,15 +237,19 @@
 
   [createLabel]="'Create MRM User'"
 
-  [showMerchantNumber]="false"
+  [rows]="mrmUserRows"
 
   (createUserClicked)="
     onCreateMrmUser()
   "
+
   (editUserClicked)="
     onEditMrmUser($event)
   "
-  >
+
+  (deleteUserClicked)="
+    onDeleteMrmUser($event)
+  ">
 
 </oms-user-management-table>
 
@@ -256,7 +260,13 @@
     showCreateMrmUser
   "
 
-  [title]="'CREATE MRM USER'">
+  [title]="'CREATE MRM USER'"
+
+  [showMerchantAccess]="false"
+
+  (saveClicked)="
+    saveMrmUser($event)
+  ">
 
 </oms-create-edit-user-form>
 
@@ -282,6 +292,9 @@
   "
   (editUserClicked)="
     onEditOmsUser($event)
+  "
+  (deleteUserClicked)="
+    onDeleteOmsUser($event)
   ">
 
 </oms-user-management-table>
@@ -293,7 +306,11 @@
     showCreateOmsUser
   "
 
-  [title]="'CREATE OMS USER'">
+  [title]="'CREATE OMS USER'"
+
+  (saveClicked)="
+    saveOmsUser($event)
+  ">
 
 </oms-create-edit-user-form>
 
@@ -318,13 +335,23 @@
 
     <oms-edit-user-form
 
-      [title]="editPopupTitle"
+  [title]="editPopupTitle"
 
-      [showRole]="false"
+  [showRole]="false"
 
-      [data]="selectedEditUser">
+  [data]="selectedEditUser"
 
-    </oms-edit-user-form>
+  (updateUserClicked)="
+
+    editPopupTitle ===
+    'EDIT OMS USER'
+
+      ? onUpdateOmsUser($event)
+
+      : onUpdateMrmUser($event)
+  ">
+
+</oms-edit-user-form>
 
   </div>
 

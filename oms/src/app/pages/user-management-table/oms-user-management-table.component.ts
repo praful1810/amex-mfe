@@ -53,6 +53,9 @@ export class OmsUserManagementTableComponent {
   @Output()
   editUserClicked = new EventEmitter<any>();
 
+  @Output()
+  deleteUserClicked = new EventEmitter<any>();
+
   @Input()
   rows: any[] = [
 
@@ -154,9 +157,30 @@ export class OmsUserManagementTableComponent {
   ) {
 
     // MOCK SELECTED USER
-    const selectedUser = this.rows[0];
+    const selectedUser =
+      this.rows[0];
 
     this.editUserClicked.emit(
+      selectedUser
+    );
+  }
+
+  // DELETE
+  if (
+    text?.toLowerCase()
+      .includes('delete')
+  ) {
+
+    // MOCK SELECTED USER
+    const selectedUser =
+      this.rows[0];
+
+    console.log(
+      'Delete User:',
+      selectedUser
+    );
+
+    this.deleteUserClicked.emit(
       selectedUser
     );
   }

@@ -6,8 +6,20 @@
 
   [submitLabel]="submitLabel"
 
-  (submit)="onSubmit($event)"
+  [countryOptions]="countryOptions"
 
-  (back)="onBack($event)">
+  [cityOptions]="cityOptions"
+
+  [legalOptions]="legalOptions"
+
+  [initialData]="initialData"
+
+  (submitClick)="
+    onSubmit($event)
+  "
+
+  (backClick)="
+    onBack()
+  ">
 
 </amex-merchant-data-form>

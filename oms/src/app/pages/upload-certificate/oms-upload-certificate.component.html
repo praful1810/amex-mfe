@@ -1,18 +1,41 @@
-<div
-  tabindex="0"
+<!-- IDLE / ERROR -->
+<amex-upload-certificate-panel
 
-  (click)="handleClick($event)"
+  *ngIf="
+    status !== 'success'
+  "
 
-  (keydown.enter)="handleClick($event)"
+  [hintText]="hintText"
 
-  (keydown.space)="handleClick($event)">
+  [status]="status"
 
-  <amex-upload-certificate-panel
+  [statusMessage]="statusMessage"
 
-    [hintText]="hintText"
+  (uploadClick)="
+    onUploadCertificate($event)
+  "
 
-    [status]="status">
+  (backClick)="
+    onBack()
+  ">
 
-  </amex-upload-certificate-panel>
+</amex-upload-certificate-panel>
 
-</div>
+<!-- SUCCESS -->
+<amex-upload-certificate-panel
+
+  *ngIf="
+    status === 'success'
+  "
+
+  [status]="'success'"
+
+  [statusMessage]="
+    'Certificate uploaded successfully.'
+  "
+
+  (backClick)="
+    onBack()
+  ">
+
+</amex-upload-certificate-panel>

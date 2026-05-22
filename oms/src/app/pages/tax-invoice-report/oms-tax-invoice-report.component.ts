@@ -1,12 +1,21 @@
 import {
   Component,
   EventEmitter,
-  Output
+  Output,
+  OnInit
 } from '@angular/core';
 
-import { CommonModule } from '@angular/common';
+import {
+  CommonModule
+} from '@angular/common';
 
-import { FormsModule } from '@angular/forms';
+import {
+  FormsModule
+} from '@angular/forms';
+
+import {
+  OmsTaxInvoiceReportService
+} from '../../services/oms-tax-invoice-report.service';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
@@ -158,10 +167,12 @@ import { FormsModule } from '@angular/forms';
 
 `]
 })
-export class OmsTaxInvoiceReportComponent {
+export class OmsTaxInvoiceReportComponent
+  implements OnInit {
 
   @Output()
-  backClicked = new EventEmitter<void>();
+  backClicked =
+    new EventEmitter<void>();
 
   vatSearchType = 'vat';
 
@@ -183,14 +194,66 @@ export class OmsTaxInvoiceReportComponent {
     'USA'
   ];
 
+  isGenerating = false;
+
+  constructor(
+    // eslint-disable-next-line @angular-eslint/prefer-inject
+    private reportService:
+      OmsTaxInvoiceReportService
+  ) {}
+
+  // INIT
+  ngOnInit() {
+
+    this.loadReportData();
+  }
+
+  // LOAD DATA
+  loadReportData() {
+
+    this.reportService
+      .getReport()
+      .subscribe(data => {
+
+        this.vatSearchType =
+          data.vatSearchType;
+
+        this.vatRegistrationNumber =
+          data.vatRegistrationNumber;
+
+        this.merchantNumber =
+          data.merchantNumber;
+
+        this.selectedCountry =
+          data.selectedCountry;
+
+        this.fromDate =
+          data.fromDate;
+
+        this.toDate =
+          data.toDate;
+
+        this.reportType =
+          data.reportType;
+
+        console.log(
+          'Loaded Report:',
+          data
+        );
+      });
+  }
+
+  // BACK
   onBack() {
 
     this.backClicked.emit();
   }
 
+  // GENERATE REPORT
   generateReport() {
 
-    console.log({
+    const payload = {
+
       vatSearchType:
         this.vatSearchType,
 
@@ -211,6 +274,29 @@ export class OmsTaxInvoiceReportComponent {
 
       reportType:
         this.reportType
-    });
+    };
+
+    console.log(
+      'Generating Report:',
+      payload
+    );
+
+    this.isGenerating = true;
+
+    // MOCK API DELAY
+    setTimeout(() => {
+
+      this.reportService
+        .saveReport(
+          payload
+        );
+
+      this.isGenerating = false;
+
+      alert(
+        'Tax Invoice Report Generated Successfully'
+      );
+
+    }, 1500);
   }
 }

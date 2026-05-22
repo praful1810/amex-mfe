@@ -1,9 +1,13 @@
 import {
   Component,
-  Input
+  EventEmitter,
+  Input,
+  Output
 } from '@angular/core';
 
-import { CommonModule } from '@angular/common';
+import {
+  CommonModule
+} from '@angular/common';
 
 import {
   AmexEditUserFormComponent
@@ -21,16 +25,7 @@ import {
   ],
 
   templateUrl:
-    './oms-edit-user-form.component.html',
-
-  styles: [`
-
-    :host {
-
-      width: 100%;
-    }
-
-  `]
+    './oms-edit-user-form.component.html'
 })
 export class OmsEditUserFormComponent {
 
@@ -42,20 +37,23 @@ export class OmsEditUserFormComponent {
   showRole = false;
 
   @Input()
-  data: any = {
+  data: any = {};
 
-    userId:
-      'wasimtest123',
+  @Output()
+  updateUserClicked =
+    new EventEmitter<any>();
 
-    userName:
-      'wasimtest123',
+  onUpdate(
+    event: any
+  ) {
 
-    emailAddress:
-      'wasim.sayyed@americanexpress.com.bh',
+    console.log(
+      'UPDATE EVENT:',
+      event
+    );
 
-    role: '',
-
-    status:
-      'Active'
-  };
+    this.updateUserClicked.emit(
+      event
+    );
+  }
 }

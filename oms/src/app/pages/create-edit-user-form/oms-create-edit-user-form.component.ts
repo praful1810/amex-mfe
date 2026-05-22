@@ -1,9 +1,13 @@
 import {
   Component,
-  Input
+  EventEmitter,
+  Input,
+  Output
 } from '@angular/core';
 
-import { CommonModule } from '@angular/common';
+import {
+  CommonModule
+} from '@angular/common';
 
 import {
   AmexMRMCreateEditUserFormComponent
@@ -40,4 +44,30 @@ export class OmsCreateEditUserFormComponent {
 
   @Input()
   showMerchantAccess = true;
+
+  @Output()
+  saveClicked =
+    new EventEmitter<any>();
+
+  onSave(
+  event: any
+) {
+
+  console.log(
+  'FULL FORM EVENT:',
+  JSON.stringify(
+    event,
+    null,
+    2
+  )
+);
+
+  alert(
+    'Save Triggered'
+  );
+
+  this.saveClicked.emit(
+    event
+  );
+}
 }

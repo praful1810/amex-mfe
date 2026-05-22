@@ -1,22 +1,17 @@
-<div
-  tabindex="0"
-  (click)="handleClick($event)"
-  (keydown.enter)="handleClick($event)"
-  (keydown.space)="handleClick($event)">
+<amex-add-delete-merchant-panel
 
-  <amex-add-delete-merchant-panel
-    [merchantOptions]="merchantOptions">
-  </amex-add-delete-merchant-panel>
+  [merchantOptions]="merchantOptions"
 
-</div>
+  (addClick)="
+    onAddMerchant($event)
+  "
 
-<!-- NEW SECTION -->
-<!-- <div class="update-merchant-section">
+  (deleteClick)="
+    onDeleteMerchant($event)
+  "
 
-  <h2>Update Merchant Account Details</h2>
+  (backClick)="
+    onStart()
+  ">
 
-  <button class="start-btn" (click)="onStart()">
-    Start
-  </button>
-
-</div> -->
+</amex-add-delete-merchant-panel>

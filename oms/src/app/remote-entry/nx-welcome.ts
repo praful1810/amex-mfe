@@ -1,5 +1,13 @@
-import { Component, ViewEncapsulation } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {
+  Component,
+  OnInit,
+  ViewEncapsulation,
+  ChangeDetectorRef
+} from '@angular/core';
+
+import {
+  CommonModule
+} from '@angular/common';
 
 import { OmsHomeComponent } from '../pages/home/oms-home.component';
 import { OmsHeaderComponent } from '../pages/header/oms-header.component';
@@ -21,18 +29,35 @@ import { OmsTaxInvoiceDeliveryComponent } from '../pages/tax-invoice-delivery/om
 import { OmsUploadCertificateComponent } from '../pages/upload-certificate/oms-upload-certificate.component';
 
 import { OmsTaxInvoiceReportComponent } from '../pages/tax-invoice-report/oms-tax-invoice-report.component';
+
 import { OmsTermsAndConditionsComponent } from '../pages/terms-and-conditions/oms-terms-and-conditions.component';
+
 import { OmsChangePasswordComponent } from '../pages/change-password/oms-change-password.component';
+
 import { OmsCustomizedReportComponent } from '../pages/customized-reports/oms-customized-report.component';
+
 import { OmsCustomizedReportsFormComponent } from '../pages/customized-reports-form/oms-customized-reports-form.component';
+
 import { OmsMonthsDropdownFilterComponent } from '../pages/months-dropdown-filter/oms-months-dropdown-filter.component';
+
 import { OmsSettlementSubmissionsTableComponent } from '../pages/settlement-submissions-table/oms-settlement-submissions-table.component';
+
 import { OmsSubUserAdminTableComponent } from '../pages/sub-user-admin-table/oms-sub-user-admin-table.component';
+
 import { OmsUserManagementTableComponent } from '../pages/user-management-table/oms-user-management-table.component';
+
 import { OmsCreateEditUserFormComponent } from '../pages/create-edit-user-form/oms-create-edit-user-form.component';
+
 import { OmsEditUserFormComponent } from '../pages/edit-user-form/oms-edit-user-form.component';
+
 import { NewOutletPortalComponent } from '../pages/new-outlet/new-outlet-portal.component';
+
 import { OmsNewOutletApplicationFormComponent } from '../pages/new-outlet-application-form/oms-new-outlet-application-form.component';
+
+import {
+  OmsUserManagementService
+} from '../services/oms-user-management.service';
+import { MrmUserManagementService } from '../services/mrm-user-management.service';
 
 @Component({
   selector: 'app-nx-welcome',
@@ -118,71 +143,72 @@ import { OmsNewOutletApplicationFormComponent } from '../pages/new-outlet-applic
 
       overflow-x: auto;
     }
-    
+
     .popup-overlay {
 
-  position: fixed;
+      position: fixed;
 
-  top: 0;
+      top: 0;
 
-  left: 0;
+      left: 0;
 
-  width: 100%;
+      width: 100%;
 
-  height: 100%;
+      height: 100%;
 
-  background: rgba(0, 0, 0, 0.5);
+      background: rgba(0, 0, 0, 0.5);
 
-  display: flex;
+      display: flex;
 
-  justify-content: center;
+      justify-content: center;
 
-  align-items: center;
+      align-items: center;
 
-  z-index: 9999;
-}
+      z-index: 9999;
+    }
 
-.popup-content {
+    .popup-content {
 
-  width: 700px;
+      width: 700px;
 
-  max-width: 90%;
+      max-width: 90%;
 
-  background: white;
+      background: white;
 
-  padding: 24px;
+      padding: 24px;
 
-  border-radius: 8px;
+      border-radius: 8px;
 
-  position: relative;
+      position: relative;
 
-  max-height: 90vh;
+      max-height: 90vh;
 
-  overflow-y: auto;
-}
+      overflow-y: auto;
+    }
 
-.close-btn {
+    .close-btn {
 
-  position: absolute;
+      position: absolute;
 
-  top: 12px;
+      top: 12px;
 
-  right: 12px;
+      right: 12px;
 
-  border: none;
+      border: none;
 
-  background: transparent;
+      background: transparent;
 
-  font-size: 20px;
+      font-size: 20px;
 
-  cursor: pointer;
-}
+      cursor: pointer;
+    }
 
   `],
 
   encapsulation: ViewEncapsulation.None,
 })
-export class NxWelcome {
+export class NxWelcome
+  implements OnInit {
 
   showSidebar = false;
 
@@ -204,7 +230,7 @@ export class NxWelcome {
 
   showSettlementSubmission = false;
 
-  showSubUserAdmin = false; 
+  showSubUserAdmin = false;
 
   showCreateSubUser = false;
 
@@ -224,111 +250,180 @@ export class NxWelcome {
 
   showNewOutletApplicationForm = false;
 
+  omsUserRows: any[] = [];
+
+  selectedOmsUser: any = null;
+
+  mrmUserRows: any[] = [];
+
+  selectedMrmUser: any = null;
+
+  constructor(
+
+    // eslint-disable-next-line @angular-eslint/prefer-inject
+    private omsUserService: OmsUserManagementService,
+    // eslint-disable-next-line @angular-eslint/prefer-inject
+    private mrmUserService: MrmUserManagementService,
+    // eslint-disable-next-line @angular-eslint/prefer-inject
+    private cdr: ChangeDetectorRef
+
+
+  ) {}
+
+  // INIT
+  ngOnInit() {
+
+    this.loadOmsUsers();
+    this.loadMrmUsers();
+  }
+
+  // LOAD OMS USERS
+  loadOmsUsers() {
+
+    this.omsUserService
+      .getUsers()
+      .subscribe(users => {
+
+        this.omsUserRows =
+          users;
+
+        console.log(
+          'OMS Users:',
+          users
+        );
+      });
+  }
+
+  loadMrmUsers() {
+
+  this.mrmUserService
+    .getUsers()
+    .subscribe(users => {
+
+      this.mrmUserRows =
+        users;
+
+      console.log(
+        'MRM Users:',
+        users
+      );
+    });
+}
+
   // TAB CLICK
   onTabChanged(tabId: string) {
 
-  console.log(
-    'Selected Tab:',
-    tabId
-  );
+    console.log(
+      'Selected Tab:',
+      tabId
+    );
 
-  // RESET ALL MAIN SCREENS
-  this.showSidebar = false;
+    // RESET
+    this.showSidebar = false;
 
-  this.showTermsConditions = false;
+    this.showTermsConditions = false;
 
-  this.showChangePassword = false;
+    this.showChangePassword = false;
 
-  this.showCustomizedReport = false;
+    this.showCustomizedReport = false;
 
-  this.showSettlementSubmission = false;
+    this.showSettlementSubmission = false;
 
-  this.showSubUserAdmin = false;
+    this.showSubUserAdmin = false;
 
-  this.showCreateSubUser  = false;
+    this.showCreateSubUser = false;
 
-  this.showMrmUserAdmin = false;
+    this.showMrmUserAdmin = false;
 
-  this.showOmsUsers = false;
+    this.showOmsUsers = false;
 
-  this.showCreateOmsUser = false;
+    this.showCreateOmsUser = false;
 
-  this.showCreateMrmUser = false;
+    this.showCreateMrmUser = false;
 
-  this.showNewOutletPortal = false;
+    this.showNewOutletPortal = false;
 
-  this.showNewOutletApplicationForm = false;
+    this.showNewOutletApplicationForm = false;
 
-  // RESET INNER VAT SCREENS
-  this.showTaxInvoiceDelivery = false;
+    this.showTaxInvoiceDelivery = false;
 
-  this.showUploadCertificate = false;
+    this.showUploadCertificate = false;
 
-  this.showTaxInvoiceReport = false;
+    this.showTaxInvoiceReport = false;
 
-  // RESET SIDEBAR MENU
-  this.selectedSidebarMenu = '';
+    this.selectedSidebarMenu = '';
 
-  // MERCHANT ACCOUNT
-  if (tabId === 'merchantaccount') {
+    // CLOSE POPUP ON TAB CHANGE
+    this.closeEditPopup();
 
-    this.showSidebar = true;
+    // MERCHANT ACCOUNT
+    if (tabId === 'merchantaccount') {
+
+      this.showSidebar = true;
+    }
+
+    // TERMS
+    if (tabId === 'termsandconditions') {
+
+      this.showTermsConditions = true;
+    }
+
+    // PASSWORD
+    if (tabId === 'password') {
+
+      this.showChangePassword = true;
+    }
+
+    // CUSTOMIZED REPORT
+    if (tabId === 'customizedreports') {
+
+      this.showCustomizedReport = true;
+    }
+
+    // SETTLEMENT
+    if (tabId === 'settlement') {
+
+      this.showSettlementSubmission = true;
+    }
+
+    // SUB USER
+    if (tabId === 'subuseradministration') {
+
+      this.showSubUserAdmin = true;
+    }
+
+    // MRM USER
+    if (tabId === 'mrmusers') {
+
+      this.showMrmUserAdmin = true;
+    }
+
+    // OMS USER
+    if (tabId === 'omsusers') {
+
+      this.showOmsUsers = true;
+    }
+
+    // NEW OUTLET
+    if (tabId === 'addnewoutlet') {
+
+      this.showNewOutletPortal = true;
+    }
   }
 
-  // TERMS & CONDITIONS
-  if (tabId === 'termsandconditions') {
-
-    this.showTermsConditions = true;
-  }
-
-  // CHANGE PASSWORD
-  if (tabId === 'password') {
-
-    this.showChangePassword = true;
-  }
-
-  // CUSTOMIZED REPORT
-  if (tabId === 'customizedreports') {
-
-    this.showCustomizedReport = true;
-  }
-
-  // SETTLEMENT & SUBMISSION
-  if (tabId === 'settlement') {
-
-    this.showSettlementSubmission = true;
-  }
-
-  // SUB USER ADMINISTRATION
-  if (tabId === 'subuseradministration') {
-    this.showSubUserAdmin = true;
-  }
-
-  // MRM USER ADMINISTRATION
-  if (tabId === 'mrmusers') {
-    this.showMrmUserAdmin = true;
-  }
-
-  // OMS USERS
-  if (tabId === 'omsusers') {
-    this.showOmsUsers = true;
-  }
-
-
-  // ADD NEW OUTLET
-  if (tabId === 'addnewoutlet') {
-    this.showNewOutletPortal = true;
-  }
-}
-  // SIDEBAR CLICK
+  // SIDEBAR
   onMenuChanged(menuId: string) {
 
-    console.log('Sidebar Menu:', menuId);
+    console.log(
+      'Sidebar Menu:',
+      menuId
+    );
 
-    this.selectedSidebarMenu = menuId;
+    this.selectedSidebarMenu =
+      menuId;
   }
 
-  // TAX INVOICE DELIVERY
+  // TAX DELIVERY
   onTaxInvoiceDeliveryClicked() {
 
     this.showTaxInvoiceDelivery = true;
@@ -350,160 +445,379 @@ export class NxWelcome {
     this.showUploadCertificate = false;
   }
 
-  // DOWNLOAD TAX INVOICE
+  // TAX REPORT
   onDownloadTaxInvoiceClicked() {
 
-    console.log(
-      'Parent Method Triggered'
-    );
-
     this.showTaxInvoiceReport = true;
-
-    console.log(
-      'showTaxInvoiceReport:',
-      this.showTaxInvoiceReport
-    );
   }
 
-  // BACK FROM TAX REPORT
   onBackFromTaxInvoiceReport() {
 
     this.showTaxInvoiceReport = false;
   }
 
+  // CREATE OMS USER
   onCreateOmsUser() {
 
-  this.showOmsUsers = false;
+    this.showOmsUsers = false;
 
-  this.showCreateOmsUser = true;
-}
-
-onBackToOmsUsers() {
-
-  this.showCreateOmsUser = false;
-
-  this.showOmsUsers = true;
-}
-
-onCreateMrmUser() {
-
-  this.showMrmUserAdmin = false;
-
-  this.showCreateMrmUser = true;
-}
-
-onBackToMrmUsers() {
-
-  this.showCreateMrmUser = false;
-
-  this.showMrmUserAdmin = true;
-}
-
-omsUserRows = [
-
-  {
-    userId: 'omsadmin1',
-
-    userName: 'Ahmed',
-
-    merchantNumber: '9275640241',
-
-    emailAddress:
-      'ahmed@merchant.ae',
-
-    creationDate: '09/09/2021',
-
-    status: 'Active'
-  },
-
-  {
-    userId: 'omsadmin2',
-
-    userName: 'Sara',
-
-    merchantNumber: '9275640242',
-
-    emailAddress:
-      'sara@merchant.ae',
-
-    creationDate: '05/05/2024',
-
-    status: 'Active'
-  },
-
-  {
-    userId: 'omsadmin3',
-
-    userName: 'Omar',
-
-    merchantNumber: '9275640243',
-
-    emailAddress:
-      'omar@merchant.ae',
-
-    creationDate: '08/09/2021',
-
-    status: 'Inactive'
+    this.showCreateOmsUser = true;
   }
 
-];
+  onBackToOmsUsers() {
 
-onEditMrmUser(user: any) {
+    this.showCreateOmsUser = false;
+
+    this.showOmsUsers = true;
+  }
+
+  // SAVE OMS USER
+  saveOmsUser(
+  event: any
+) {
 
   console.log(
-    'Selected User:',
+    'FORM EVENT:',
+    event
+  );
+
+  const newUser = {
+
+    // TABLE FIELD
+    userId:
+      event.username,
+
+    // TABLE FIELD
+    userName:
+      event.name,
+
+    // TABLE FIELD
+    emailAddress:
+      event.email,
+
+    creationDate:
+      new Date()
+        .toLocaleDateString(),
+
+    status:
+      'Active',
+
+    merchantNumber:
+
+      event.merchantAccess?.[0] ||
+
+      '9275640241'
+  };
+
+  console.log(
+    'NEW USER:',
+    newUser
+  );
+
+  this.omsUserService
+    .addUser(
+      newUser
+    );
+
+  // CLOSE FORM
+  this.showCreateOmsUser =
+    false;
+
+  // SHOW TABLE
+  this.showOmsUsers =
+    true;
+}
+
+onDeleteOmsUser(
+  user: any
+) {
+
+  console.log(
+    'Deleting User:',
     user
   );
 
-  this.selectedEditUser = user;
+  this.omsUserService
+    .deleteUser(
+      user.userId
+    );
+}
+
+onUpdateOmsUser(
+  event: any
+) {
+
+  console.log(
+    'UPDATED EVENT:',
+    event
+  );
+
+  const updatedUser = {
+
+    userId:
+
+      event.username ||
+
+      this.selectedEditUser.userId,
+
+    userName:
+
+      event.name ||
+
+      this.selectedEditUser.userName,
+
+    emailAddress:
+
+      event.email ||
+
+      this.selectedEditUser.emailAddress,
+
+    creationDate:
+
+      this.selectedEditUser
+        .creationDate,
+
+    status:
+      'Active',
+
+    merchantNumber:
+
+      event.merchantAccess?.[0] ||
+
+      this.selectedEditUser
+        .merchantNumber
+  };
+
+  console.log(
+    'FINAL UPDATED USER:',
+    updatedUser
+  );
+
+  this.omsUserService
+    .updateUser(
+      updatedUser
+    );
+
+  // CLOSE POPUP
+  this.showEditUserPopup =
+    false;
+}
+
+  // CREATE MRM USER
+  onCreateMrmUser() {
+
+    this.showMrmUserAdmin = false;
+
+    this.showCreateMrmUser = true;
+  }
+
+  onBackToMrmUsers() {
+
+    this.showCreateMrmUser = false;
+
+    this.showMrmUserAdmin = true;
+  }
+
+  // EDIT MRM USER
+  // EDIT MRM USER
+onEditMrmUser(
+  user: any
+) {
+
+  console.log(
+    'MRM EDIT USER:',
+    user
+  );
+
+  // RESET POPUP
+  this.showEditUserPopup =
+    false;
+
+  // CLEAR OLD DATA
+  this.selectedEditUser =
+    null;
+
+  // FORCE REFRESH
+  this.cdr.detectChanges();
+
+  // SET NEW DATA
+  this.selectedEditUser = {
+
+    ...user
+  };
 
   this.editPopupTitle =
     'EDIT MRM USER';
 
-  this.showEditUserPopup = true;
+  // OPEN POPUP
+  this.showEditUserPopup =
+    true;
 }
 
-closeEditPopup() {
-
-  this.showEditUserPopup = false;
-}
-
-onEditOmsUser(user: any) {
+  // EDIT OMS USER
+onEditOmsUser(
+  user: any
+) {
 
   console.log(
-    'OMS User:',
+    'OMS EDIT USER:',
     user
   );
 
-  this.selectedEditUser = user;
+  // RESET POPUP
+  this.showEditUserPopup =
+    false;
+
+  // CLEAR OLD DATA
+  this.selectedEditUser =
+    null;
+
+  // FORCE REFRESH
+  this.cdr.detectChanges();
+
+  // SET NEW DATA
+  this.selectedEditUser = {
+
+    ...user
+  };
 
   this.editPopupTitle =
     'EDIT OMS USER';
 
-  this.showEditUserPopup = true;
+  // OPEN POPUP
+  this.showEditUserPopup =
+    true;
 }
 
-onCreateSubUser() {
+  // CLOSE POPUP
+  closeEditPopup() {
 
-  this.showSubUserAdmin = false;
+  this.showEditUserPopup =
+    false;
 
-  this.showCreateSubUser = true;
-}
-
-onEditSubUser(user: any) {
-
-  this.selectedEditUser = user;
+  this.selectedEditUser =
+    null;
 
   this.editPopupTitle =
-    'EDIT SUB USER';
-
-  this.showEditUserPopup = true;
+    '';
 }
 
-onCreateNewApplication() {
+  // SUB USER
+  onCreateSubUser() {
 
-  this.showNewOutletPortal = false;
+    this.showSubUserAdmin = false;
 
-  this.showNewOutletApplicationForm = true;
+    this.showCreateSubUser = true;
+  }
+
+  onEditSubUser(user: any) {
+
+    this.selectedEditUser = user;
+
+    this.editPopupTitle =
+      'EDIT SUB USER';
+
+    this.showEditUserPopup = true;
+  }
+
+  // NEW OUTLET
+  onCreateNewApplication() {
+
+    this.showNewOutletPortal = false;
+
+    this.showNewOutletApplicationForm = true;
+  }
+
+  saveMrmUser(
+  event: any
+) {
+
+  const newUser = {
+
+    id:
+      Date.now(),
+
+    userId:
+      event.username,
+
+    userName:
+      event.name,
+
+    emailAddress:
+      event.email,
+
+    creationDate:
+      new Date()
+        .toLocaleDateString(),
+
+    status:
+      'Active'
+  };
+
+  this.mrmUserService
+    .addUser(
+      newUser
+    );
+
+  this.showCreateMrmUser =
+    false;
+
+  this.showMrmUserAdmin =
+    true;
+}
+
+onDeleteMrmUser(
+  user: any
+) {
+
+  this.mrmUserService
+    .deleteUser(
+      user.id
+    );
+}
+
+onUpdateMrmUser(
+  event: any
+) {
+
+  const updatedUser = {
+
+    id:
+      this.selectedEditUser.id,
+
+    userId:
+
+      event.username ||
+
+      this.selectedEditUser.userId,
+
+    userName:
+
+      event.name ||
+
+      this.selectedEditUser.userName,
+
+    emailAddress:
+
+      event.email ||
+
+      this.selectedEditUser.emailAddress,
+
+    creationDate:
+
+      this.selectedEditUser
+        .creationDate,
+
+    status:
+      'Active'
+  };
+
+  this.mrmUserService
+    .updateUser(
+      updatedUser
+    );
+
+  this.showEditUserPopup =
+    false;
 }
 }

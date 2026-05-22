@@ -1,100 +1,179 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {
+  Component,
+  EventEmitter,
+  OnInit,
+  Output
+} from '@angular/core';
+
+import { CommonModule }
+from '@angular/common';
 
 import {
   AmexAddDeleteMerchantPanelComponent
 } from '@vn-core/ui-components';
 
-import { Merchant } from '../../models/merchant.model';
-import { OmsMerchantService } from '../../services/oms-merchant.service';
+import {
+  Merchant
+} from '../../models/merchant.model';
+
+import {
+  OmsMerchantService
+} from '../../services/oms-merchant.service';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'oms-merchant-panel',
+
   standalone: true,
+
   imports: [
     CommonModule,
     AmexAddDeleteMerchantPanelComponent
   ],
-  templateUrl: './oms-merchant-panel.component.html',
-  styleUrls: ['./oms-merchant-panel.component.css']
+
+  templateUrl:
+    './oms-merchant-panel.component.html',
+
+  styleUrls: [
+    './oms-merchant-panel.component.css'
+  ]
 })
 export class OmsMerchantPanelComponent
   implements OnInit {
 
+  @Output()
+  startClicked =
+    new EventEmitter<void>();
+
   merchantOptions: any[] = [];
 
-  @Output()
-  startClicked = new EventEmitter<void>();
+  merchants: Merchant[] = [];
 
   constructor(
-    private merchantService: OmsMerchantService
+    // eslint-disable-next-line @angular-eslint/prefer-inject
+    private merchantService:
+      OmsMerchantService
   ) {}
 
+  isAddingMerchant = false;
+
+  isDeletingMerchant = false;
+
+  // INIT
   ngOnInit() {
 
-    this.merchantService.merchants$
-      .subscribe(data => {
+    this.loadMerchants();
+  }
 
-        this.merchantOptions = data.map(
-        merchant => ({
-            merchantNo: merchant.merchantNo,
+  // LOAD MERCHANTS
+  loadMerchants() {
 
-            label:
-            `${merchant.merchantNo} - IBAN: ${merchant.ibanLast5Digits}`
-        })
+    this.merchantService
+      .getMerchants()
+      .subscribe(merchants => {
+
+        this.merchants =
+          merchants;
+
+        this.merchantOptions =
+          merchants.map(
+            merchant => ({
+
+              merchantNo:
+                merchant.merchantNo,
+
+              ibanLast5Digits:
+                merchant.ibanLast5Digits,
+
+              label:
+                merchant.merchantNo
+            })
+          );
+
+        console.log(
+          'Merchant List:',
+          merchants
         );
-
-        console.log('Merchant List:', data);
       });
   }
 
-  // 👉 add merchant event
-  onAddMerchant(event: any) {
+  // ADD MERCHANT
+  onAddMerchant(
+  event: any
+) {
 
-    console.log('Add Merchant Event:', event);
+  console.log(
+    'Add Merchant Event:',
+    event
+  );
 
-    this.merchantService.addMerchant(
-      event.primaryMerchantNumber,
-      event.ibanLast5Digits
+  const merchantNo =
+    event?.merchantNo;
+
+  const ibanLast5Digits =
+    event?.lastFiveIban;
+
+  // VALIDATION
+  if (
+    !merchantNo ||
+    !ibanLast5Digits
+  ) {
+
+    alert(
+      'Please enter all fields'
     );
+
+    return;
   }
 
-  // 👉 delete merchant event
-  onDeleteMerchant(event: any) {
-
-    console.log('Delete Merchant:', event);
-
+  const isAdded =
     this.merchantService
-      .deleteMerchant(event.merchantNo);
-  }
-
-  handleClick(event: any) {
-
-    const text =
-        event.target?.innerText?.trim();
-
-    console.log('Clicked:', text);
-
-    // 👉 detect submit click
-    if (text === 'Submit') {
-
-        // 👉 mock values for now
-        const merchantNo = 'M1001';
-
-        const ibanLast5Digits = '45678';
-
-        this.merchantService.addMerchant(
+      .addMerchant(
         merchantNo,
         ibanLast5Digits
-        );
-    }
-    }
+      );
 
-    onStart() {
+  if (isAdded) {
 
-    console.log('Start Clicked');
+    alert(
+      'Merchant Added Successfully'
+    );
+
+  } else {
+
+    alert(
+      'Merchant already exists'
+    );
+  }
+}
+
+  // DELETE MERCHANT
+  onDeleteMerchant(
+  merchantNo: string
+) {
+
+  console.log(
+    'Delete Merchant:',
+    merchantNo
+  );
+
+  this.merchantService
+    .deleteMerchant(
+      merchantNo
+    );
+
+  alert(
+    'Merchant Deleted'
+  );
+}
+
+  // START
+  onStart() {
+
+    console.log(
+      'Start Clicked'
+    );
 
     this.startClicked.emit();
-    }
+  }
 }
