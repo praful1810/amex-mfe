@@ -1,25 +1,19 @@
-<div
+<amex-sub-user-admin-table
 
-  tabindex="0"
+  [rows]="rows"
 
-  role="button"
+  [title]="title"
 
-  (click)="handleClick($event)"
+  [showCreate]="showCreate"
 
-  (keyup.enter)="handleClick($event)"
+  [createLabel]="createLabel"
 
-  (keydown.space)="handleClick($event)">
+  (createClick)="
+    createUserClicked.emit()
+  "
 
-  <amex-sub-user-admin-table
+  (actionClick)="
+    handleAction($event)
+  ">
 
-    [rows]="rows"
-
-    [title]="title"
-
-    [showCreate]="showCreate"
-
-    [createLabel]="createLabel">
-
-  </amex-sub-user-admin-table>
-
-</div>
+</amex-sub-user-admin-table>

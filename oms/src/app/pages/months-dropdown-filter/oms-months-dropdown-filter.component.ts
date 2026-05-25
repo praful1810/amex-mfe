@@ -1,9 +1,13 @@
 import {
   Component,
-  Input
+  EventEmitter,
+  Input,
+  Output
 } from '@angular/core';
 
-import { CommonModule } from '@angular/common';
+import {
+  CommonModule
+} from '@angular/common';
 
 import {
   AmexMonthsDropdownFilterComponent
@@ -11,7 +15,7 @@ import {
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
-  selector: 'oms-months-dropdown-filter',
+  selector:'oms-months-dropdown-filter',
 
   standalone: true,
 
@@ -39,7 +43,8 @@ export class OmsMonthsDropdownFilterComponent {
     'Select number of months';
 
   @Input()
-  buttonLabel = 'Submit';
+  buttonLabel =
+    'Submit';
 
   @Input()
   hint =
@@ -53,4 +58,29 @@ export class OmsMonthsDropdownFilterComponent {
     6,
     12
   ];
+
+  @Output()
+  submitClicked =
+    new EventEmitter<number>();
+
+  selectedMonths = 1;
+
+  // DROPDOWN CHANGE
+  onMonthsSelected(
+    months: number
+  ) {
+
+    console.log(
+      'Dropdown Changed:',
+      months
+    );
+
+    this.selectedMonths =
+      Number(months);
+
+    // IMMEDIATELY SUBMIT
+    this.submitClicked.emit(
+      this.selectedMonths
+    );
+  }
 }

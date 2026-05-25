@@ -6,6 +6,10 @@
 
   [hint]="hint"
 
-  [monthOptions]="monthOptions">
+  [monthOptions]="monthOptions"
+
+  (monthsSelected)="
+    onMonthsSelected($event)
+  ">
 
 </amex-months-dropdown-filter>

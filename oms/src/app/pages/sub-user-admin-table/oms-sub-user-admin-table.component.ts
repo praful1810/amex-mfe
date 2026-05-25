@@ -51,7 +51,14 @@ export class OmsSubUserAdminTableComponent {
   createUserClicked = new EventEmitter<void>();
 
   @Output()
-  editUserClicked = new EventEmitter<any>();
+editUserClicked =
+  new EventEmitter<any>();
+
+@Output()
+deleteUserClicked =
+  new EventEmitter<any>();
+
+selectedRow: any = null;
 
   @Input()
   rows = [
@@ -99,36 +106,32 @@ export class OmsSubUserAdminTableComponent {
     }
   ];
 
-  handleClick(event: any) {
-
-  const text =
-    event.target?.innerText?.trim();
+handleAction(event: any) {
 
   console.log(
-    'Clicked:',
-    text
+    'TABLE ACTION:',
+    event
   );
-
-  if (
-    text?.toLowerCase()
-      .includes('create')
-  ) {
-
-    this.createUserClicked.emit();
-  }
 
   // EDIT
   if (
-    text?.toLowerCase()
-      .includes('edit')
+    event?.action === 'edit'
   ) {
 
-    const selectedUser =
-      this.rows[0];
-
     this.editUserClicked.emit(
-      selectedUser
+      event.row
+    );
+  }
+
+  // DELETE
+  if (
+    event?.action === 'delete'
+  ) {
+
+    this.deleteUserClicked.emit(
+      event.row
     );
   }
 }
+
 }

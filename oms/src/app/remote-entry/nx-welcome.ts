@@ -58,6 +58,8 @@ import {
   OmsUserManagementService
 } from '../services/oms-user-management.service';
 import { MrmUserManagementService } from '../services/mrm-user-management.service';
+import { SubUserManagementService } from '../services/sub-user-management.service';
+import { OmsSettlementSubmissionService } from '../services/oms-settlement-submission.service';
 
 @Component({
   selector: 'app-nx-welcome',
@@ -258,6 +260,19 @@ export class NxWelcome
 
   selectedMrmUser: any = null;
 
+  subUserRows: any[] = [];
+
+  editFormRender = true;
+
+  editFormVersion = 0;
+
+  settlementRows: any[] = [];
+
+  settlementLoading = false;
+
+  showSettlementTable = false;
+
+
   constructor(
 
     // eslint-disable-next-line @angular-eslint/prefer-inject
@@ -265,7 +280,11 @@ export class NxWelcome
     // eslint-disable-next-line @angular-eslint/prefer-inject
     private mrmUserService: MrmUserManagementService,
     // eslint-disable-next-line @angular-eslint/prefer-inject
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    // eslint-disable-next-line @angular-eslint/prefer-inject
+    private subUserService: SubUserManagementService,
+    // eslint-disable-next-line @angular-eslint/prefer-inject
+    private settlementService: OmsSettlementSubmissionService
 
 
   ) {}
@@ -275,6 +294,7 @@ export class NxWelcome
 
     this.loadOmsUsers();
     this.loadMrmUsers();
+    this.loadSubUsers();
   }
 
   // LOAD OMS USERS
@@ -307,6 +327,82 @@ export class NxWelcome
         'MRM Users:',
         users
       );
+    });
+}
+
+loadSubUsers() {
+
+  this.subUserService
+    .getUsers()
+    .subscribe(users => {
+
+      this.subUserRows =
+        users;
+
+      console.log(
+        'SUB USERS:',
+        users
+      );
+    });
+}
+
+// LOAD INITIAL TABLE
+loadSettlementRows() {
+
+  this.settlementService
+    .getRows()
+    .subscribe((rows: any[]) => {
+
+      this.settlementRows =
+        rows;
+    });
+}
+
+// FILTER TABLE
+onSettlementSubmit(
+  months: number
+) {
+
+  console.log(
+    'FILTER MONTHS:',
+    months
+  );
+
+  // HIDE TABLE
+  this.showSettlementTable =
+    false;
+
+  // SHOW LOADING
+  this.settlementLoading =
+    true;
+
+  // FORCE UI REFRESH
+  this.cdr.detectChanges();
+
+  this.settlementService
+    .filterRows(
+      months
+    )
+    .subscribe((rows: any[]) => {
+
+      console.log(
+        'FILTERED ROWS:',
+        rows
+      );
+
+      this.settlementRows =
+        [...rows];
+
+      // STOP LOADING
+      this.settlementLoading =
+        false;
+
+      // SHOW TABLE
+      this.showSettlementTable =
+        true;
+
+      // FORCE UI REFRESH
+      this.cdr.detectChanges();
     });
 }
 
@@ -710,15 +806,142 @@ onEditOmsUser(
     this.showCreateSubUser = true;
   }
 
-  onEditSubUser(user: any) {
+  onEditSubUser(
+  user: any
+) {
 
-    this.selectedEditUser = user;
+  console.log(
+    'EDIT SUB USER:',
+    user
+  );
+
+  this.showEditUserPopup =
+    false;
+
+  this.selectedEditUser =
+    null;
+
+  this.cdr.detectChanges();
+
+  setTimeout(() => {
+
+    // IMPORTANT:
+    // KEEP ORIGINAL ID
+    this.selectedEditUser = {
+
+      id:
+        user.id,
+
+      userId:
+        user.email ||
+
+        '',
+
+      userName:
+        user.name ||
+
+        '',
+
+      emailAddress:
+        user.email ||
+
+        '',
+
+      role:
+        user.role ||
+
+        'Sub User',
+
+      merchantNumber:
+        ''
+    };
+
+    console.log(
+      'FINAL EDIT DATA:',
+      this.selectedEditUser
+    );
 
     this.editPopupTitle =
       'EDIT SUB USER';
 
-    this.showEditUserPopup = true;
+    this.showEditUserPopup =
+        true;
+
+    this.cdr.detectChanges();
+
+  }, 0);
+}
+
+onUpdateSubUser(
+  event: any
+) {
+
+  console.log(
+    'UPDATED EVENT:',
+    event
+  );
+
+  const updatedUser = {
+
+    id:
+      this.selectedEditUser.id,
+
+    // IMPORTANT:
+    // TABLE EXPECTS name
+    name:
+
+      event.userName ||
+
+      this.selectedEditUser.userName,
+
+    // IMPORTANT:
+    // TABLE EXPECTS email
+    email:
+
+      event.emailAddress ||
+
+      this.selectedEditUser.emailAddress,
+
+    role:
+      'Sub User',
+
+    status:
+      'Active'
+  };
+
+  console.log(
+    'FINAL UPDATED USER:',
+    updatedUser
+  );
+
+  this.subUserService
+    .updateUser(
+      updatedUser
+    );
+
+  this.showEditUserPopup =
+    false;
+}
+
+onDeleteSubUser(
+  user: any
+) {
+
+  console.log(
+    'DELETE SUB USER:',
+    user
+  );
+
+  if (!user?.id) {
+
+    return;
   }
+
+  this.subUserService
+    .deleteUser(
+      user.id
+    );
+}
 
   // NEW OUTLET
   onCreateNewApplication() {
@@ -819,5 +1042,48 @@ onUpdateMrmUser(
 
   this.showEditUserPopup =
     false;
+}
+
+saveSubUser(
+  event: any
+) {
+
+  const newUser = {
+
+    id:
+      Date.now(),
+
+    name:
+      event.name,
+
+    email:
+      event.email,
+
+    role:
+      'Sub User',
+
+    status:
+      'Active'
+  };
+
+  this.subUserService
+    .addUser(
+      newUser
+    );
+
+  this.showCreateSubUser =
+    false;
+
+  this.showSubUserAdmin =
+    true;
+}
+
+onBackToNewOutletPortal() {
+
+  this.showNewOutletApplicationForm =
+    false;
+
+  this.showNewOutletPortal =
+    true;
 }
 }

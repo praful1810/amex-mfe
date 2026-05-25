@@ -188,12 +188,28 @@
   class="settlement-container">
 
   <!-- MONTH FILTER -->
-  <oms-months-dropdown-filter>
-  </oms-months-dropdown-filter>
+  <oms-months-dropdown-filter
+
+  (submitClicked)="
+    onSettlementSubmit($event)
+  ">
+
+</oms-months-dropdown-filter>
 
   <!-- TABLE -->
-  <oms-settlement-submissions-table>
-  </oms-settlement-submissions-table>
+  <oms-settlement-submissions-table
+
+  *ngIf="
+    showSettlementTable
+  "
+
+  [rows]="settlementRows"
+
+  [loading]="
+    settlementLoading
+  ">
+
+</oms-settlement-submissions-table>
 
 </div>
 
@@ -205,11 +221,18 @@
     !showCreateSubUser
   "
 
+  [rows]="subUserRows"
+
   (createUserClicked)="
     onCreateSubUser()
   "
+
   (editUserClicked)="
     onEditSubUser($event)
+  "
+
+  (deleteUserClicked)="
+    onDeleteSubUser($event)
   ">
 
 </oms-sub-user-admin-table>
@@ -221,7 +244,13 @@
     showCreateSubUser
   "
 
-  [title]="'CREATE SUB USER'">
+  [title]="'CREATE SUB USER'"
+
+  [showMerchantAccess]="false"
+
+  (saveClicked)="
+    saveSubUser($event)
+  ">
 
 </oms-create-edit-user-form>
 
@@ -335,6 +364,15 @@
 
     <oms-edit-user-form
 
+  *ngIf="
+    editFormRender &&
+    selectedEditUser
+  "
+
+  [attr.data-version]="
+    editFormVersion
+  "
+
   [title]="editPopupTitle"
 
   [showRole]="false"
@@ -348,7 +386,12 @@
 
       ? onUpdateOmsUser($event)
 
-      : onUpdateMrmUser($event)
+      : editPopupTitle ===
+        'EDIT MRM USER'
+
+          ? onUpdateMrmUser($event)
+
+          : onUpdateSubUser($event)
   ">
 
 </oms-edit-user-form>
@@ -376,6 +419,10 @@
 
   *ngIf="
     showNewOutletApplicationForm
+  "
+
+  (backClicked)="
+    onBackToNewOutletPortal()
   ">
 
 </oms-new-outlet-application-form>

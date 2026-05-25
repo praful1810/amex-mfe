@@ -3,7 +3,9 @@ import {
   Input
 } from '@angular/core';
 
-import { CommonModule } from '@angular/common';
+import {
+  CommonModule
+} from '@angular/common';
 
 import {
   AmexSettlementSubmissionsTableComponent
@@ -11,7 +13,7 @@ import {
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
-  selector: 'oms-settlement-submissions-table',
+  selector:'oms-settlement-submissions-table',
 
   standalone: true,
 
@@ -30,59 +32,24 @@ import {
       width: 100%;
     }
 
+    .loading {
+
+      padding: 24px;
+
+      text-align: center;
+
+      font-size: 18px;
+
+      color: #6a1b9a;
+    }
+
   `]
 })
 export class OmsSettlementSubmissionsTableComponent {
 
   @Input()
-  rows = [
+  rows: any[] = [];
 
-    {
-      period: 'Sep 2024',
-
-      merchantAccount:
-        '9275640241',
-
-      settlementAmount:
-        'AED 12,450.00',
-
-      submissionsCount:
-        '8',
-
-      status:
-        'Completed'
-    },
-
-    {
-      period: 'Aug 2024',
-
-      merchantAccount:
-        '9275640241',
-
-      settlementAmount:
-        'AED 9,820.00',
-
-      submissionsCount:
-        '6',
-
-      status:
-        'Completed'
-    },
-
-    {
-      period: 'Jul 2024',
-
-      merchantAccount:
-        '9275640241',
-
-      settlementAmount:
-        'AED 14,100.00',
-
-      submissionsCount:
-        '10',
-
-      status:
-        'Pending'
-    }
-  ];
+  @Input()
+  loading = false;
 }
