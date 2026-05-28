@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import {
   AmexTabBarComponent,
   AmexTabItem
-} from '@vn-core/ui-components';
+} from '@vn-core-ui-components/ui';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
@@ -49,14 +49,6 @@ export class OmsHomeComponent {
       id: 'termsandconditions',
       label: 'Terms & Conditions'
     },
-    // {
-    //   id: 'daterange',
-    //   label: 'Date Range'
-    // },
-    // {
-    //   id: 'searchreports',
-    //   label: 'Search Reports'
-    // },
     {
       id: 'customizedreports',
       label: 'Customized Reports'

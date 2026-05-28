@@ -10,7 +10,7 @@ from '@angular/common';
 
 import {
   AmexAddDeleteMerchantPanelComponent
-} from '@vn-core/ui-components';
+} from '@vn-core-ui-components/ui';
 
 import {
   Merchant

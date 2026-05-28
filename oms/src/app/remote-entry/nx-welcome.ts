@@ -9,6 +9,10 @@ import {
   CommonModule
 } from '@angular/common';
 
+import {
+  RouterOutlet
+} from '@angular/router';
+
 import { OmsHomeComponent } from '../pages/home/oms-home.component';
 import { OmsHeaderComponent } from '../pages/header/oms-header.component';
 
@@ -61,6 +65,9 @@ import { MrmUserManagementService } from '../services/mrm-user-management.servic
 import { SubUserManagementService } from '../services/sub-user-management.service';
 import { OmsSettlementSubmissionService } from '../services/oms-settlement-submission.service';
 
+import { AmexPageShellComponent } from '@vn-core-ui-components/ui';
+
+
 @Component({
   selector: 'app-nx-welcome',
 
@@ -102,7 +109,9 @@ import { OmsSettlementSubmissionService } from '../services/oms-settlement-submi
     OmsEditUserFormComponent,
     NewOutletPortalComponent,
 
-    OmsNewOutletApplicationFormComponent
+    OmsNewOutletApplicationFormComponent,
+
+    RouterOutlet,
   ],
 
   templateUrl: './remote-entry.html',
@@ -407,7 +416,7 @@ onSettlementSubmit(
 }
 
   // TAB CLICK
-  onTabChanged(tabId: string) {
+  onTabChanged(tabId: any) {
 
     console.log(
       'Selected Tab:',

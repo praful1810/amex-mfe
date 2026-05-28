@@ -15,7 +15,7 @@ import {
 
 import {
   AmexCustomizedReportsFormComponent
-} from '@vn-core/ui-components';
+} from '@vn-core-ui-components/ui';
 
 import {
   OmsCustomizedReportsService

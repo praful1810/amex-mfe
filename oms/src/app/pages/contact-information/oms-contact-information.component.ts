@@ -10,7 +10,7 @@ import {
 
 import {
   AmexContactInformationFormComponent
-} from '@vn-core/ui-components';
+} from '@vn-core-ui-components/ui';
 
 import {
   OmsContactInformationService

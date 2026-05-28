@@ -9,7 +9,7 @@ import {
 
 import {
   AmexSettlementSubmissionsTableComponent
-} from '@vn-core/ui-components';
+} from '@vn-core-ui-components/ui';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
